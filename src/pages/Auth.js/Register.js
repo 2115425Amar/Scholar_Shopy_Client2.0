@@ -16,173 +16,115 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  // Form function
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(name, email, phone, address, answer);
-
     try {
-      // Make the POST request
       const res = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/auth/Register`,
-        {
-          name,
-          email,
-          password,
-          phone,
-          address,
-          answer,
-        }
+        { name, email, password, phone, address, answer }
       );
 
-      // Check the response and show appropriate toast messages
       if (res && res.data.success) {
         toast.success(res.data.message);
-        // Redirect to the login page after successful registration
         navigate("/login");
-      } 
-      else {
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
       console.error("Error during registration:", error);
-      // Handle error and show an appropriate toast message
       toast.error("An error occurred during registration.");
     }
   };
 
   return (
     <Layout>
-      <section className="vh-91" style={{ backgroundColor: "#eee" }}>
-        <div className="container h-100">
-          <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col-lg-12 col-xl-10">
-              <div className="card text-black" style={{ borderRadius: 25 }}>
-                <div className="card-body p-md-6">
-                  <div className="row justify-content-center">
-                    <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                      <p className="text-center h1 fw-bold mb-4 mx-1 mx-md-4 mt-4">
-                        Sign up
-                      </p>
-                      <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-user fa-lg me-3 fa-fw" />
-                          <div className="form-outline flex-fill mb-0">
-                            <input
-                              type="text"
-                              value={name} // input ko state ke sath bind kr diya
-                              onChange={(e) => setName(e.target.value)} //jo bhi chnge honge wo event se detect honge aur value ke through name me set ho jayenge
-                              className="form-control"
-                              id="exampleInputname"
-                              placeholder="Enter Your Name"
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-envelope fa-lg me-3 fa-fw" />
-                          <div className="form-outline flex-fill mb-0">
-                            <input
-                              type="email"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              className="form-control"
-                              id="exampleInputEmail"
-                              placeholder="Enter Your email"
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-lock fa-lg me-3 fa-fw" />
-                          <div className="form-outline flex-fill mb-0">
-                            <input
-                              type="password"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                              className="form-control"
-                              id="exampleInputPassword1"
-                              placeholder="Enter Your Password"
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          {/* <i className="fas fa-key fa-lg me-3 fa-fw" /> */}
-                          <i class="fa fa-mobile fa-lg me-3 fa-fw"></i>
-                          <div className="form-outline flex-fill mb-0">
-                            <input
-                              type="text"
-                              value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
-                              className="form-control"
-                              id="exampleInputText"
-                              placeholder="Enter Your phone"
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-address-book fa-lg me-3 fa-fw" />
-                          <div className="form-outline flex-fill mb-0">
-                            <input
-                              type="text"
-                              value={address}
-                              onChange={(e) => setAddress(e.target.value)}
-                              className="form-control"
-                              id="exampleInputAddress"
-                              placeholder="Enter Your  Address"
-                              required
-                            />
-                          </div>
-                        </div>
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          {/* <i className="fas fa-hand-o-right fa-lg me-3 fa-fw" /> */}
-                          <i class="fa fa-hand-o-right fa-lg me-3 fa-fw"></i>
-                          <div className="form-outline flex-fill mb-0">
-                            <input
-                              type="text"
-                              value={answer}
-                              onChange={(e) => setAnswer(e.target.value)}
-                              className="form-control"
-                              id="exampleInputanswer"
-                              placeholder="Your Best Friend Name?"
-                              required
-                            />
-                          </div>
-                        </div>
+      <section className="bg-gray-100 min-h-screen flex items-center justify-center py-10">
+        <div className="container mx-auto max-w-6xl px-4">
+          <div className="bg-white rounded-3xl shadow-lg grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
+            {/* Form Section */}
+            <div className="p-8 lg:p-12">
+              <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Sign Up</h2>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <input
+                  type="text"
+                  placeholder="Enter Your Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
 
-                        <div className="form-check d-flex justify-content-center mb-3">
-                          <input
-                            className="form-check-input me-2"
-                            type="checkbox"
-                            defaultValue=""
-                            id="form2Example3c"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="form2Example3"
-                          >
-                            I agree all statements in{" "}
-                            <a href="#!">Terms of service</a>
-                          </label>
-                        </div>
-                        <div className="d-flex justify-content-center mx-4  mb-lg-4">
-                          <button
-                            className="btn btn-primary btn-lg"
-                            type="submit"
-                          >
-                            Register
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                    <div className="col-md-10 col-sm-2 col-lg-6 col-xl-5 d-flex align-items-center order-1 order-lg-2">
-                      <Lottie animationData={ContactAnimation} />
-                    </div>
-                  </div>
+                <input
+                  type="email"
+                  placeholder="Enter Your Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <input
+                  type="password"
+                  placeholder="Enter Your Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Enter Your Phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Enter Your Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Your Best Friend Name?"
+                  value={answer}
+                  onChange={(e) => setAnswer(e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="terms"
+                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <label htmlFor="terms" className="text-sm text-gray-600">
+                    I agree to the{" "}
+                    <a href="#!" className="text-blue-600 hover:underline">
+                      Terms of service
+                    </a>
+                  </label>
                 </div>
-              </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-200"
+                >
+                  Register
+                </button>
+              </form>
+            </div>
+
+            {/* Animation Section */}
+            <div className="hidden lg:flex items-center justify-center bg-blue-50">
+              <Lottie animationData={ContactAnimation} />
             </div>
           </div>
         </div>
