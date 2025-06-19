@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
-import SearchInput from "../Form/SearchInput";
+// import SearchInput from "../Form/SearchInput";
 import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import { Badge } from "antd";
@@ -55,9 +55,9 @@ const Header = () => {
           {/* Nav Items */}
           <ul className={`lg:flex lg:items-center lg:space-x-6 ${menuOpen ? "block" : "hidden"} absolute lg:static top-16 left-0 w-full lg:w-auto bg-white lg:bg-transparent px-6 lg:px-0 py-4 lg:py-0 space-y-4 lg:space-y-0`}>
             {/* Search */}
-            <li className="w-full lg:w-auto">
+            {/* <li className="w-full lg:w-auto">
               <SearchInput />
-            </li>
+            </li> */}
 
             {/* Links */}
             <li>
