@@ -5,19 +5,26 @@ import { useAuth } from "../../context/auth";
 
 const AdminDashboard = () => {
   const [auth] = useAuth();
+
   return (
     <Layout>
-      <div className="container-fluid m-3 p-3">
-        <div className="row">
-          <div className="col-md-3">
+      <div className="m-3 p-3">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="md:w-1/4">
             <AdminMenu />
           </div>
-          
-          <div className="col-md-9">
-            <div className="card w-75 p-3">
-              <h3> Admin Name : {auth?.user?.name}</h3>
-              <h3> Admin Email : {auth?.user?.email}</h3>
-              <h3> Admin Contact : {auth?.user?.phone}</h3>
+
+          <div className="md:w-3/4">
+            <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-2xl">
+              <h3 className="text-lg font-semibold mb-2">
+                Admin Name: {auth?.user?.name}
+              </h3>
+              <h3 className="text-lg font-semibold mb-2">
+                Admin Email: {auth?.user?.email}
+              </h3>
+              <h3 className="text-lg font-semibold">
+                Admin Contact: {auth?.user?.phone}
+              </h3>
             </div>
           </div>
         </div>

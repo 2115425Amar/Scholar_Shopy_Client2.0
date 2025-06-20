@@ -13,11 +13,13 @@ const CreateCategory = () => {
   const [selected, setSelected] = useState(null);
   const [updatedName, setUpdatedName] = useState("");
 
-  //handle Form
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/category/create-category`,{name,});
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API}/api/v1/category/create-category`,
+        { name }
+      );
       if (data?.success) {
         toast.success(`${name} is created`);
         getAllCategory();
@@ -25,21 +27,20 @@ const CreateCategory = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
       toast.error("Something went wrong in input form");
     }
   };
 
-  //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/category/get-category`);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/category/get-category`
+      );
       if (data.success) {
         setCategories(data.category);
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong in getting catgeory");
+      toast.error("Something went wrong in getting category");
     }
   };
 
@@ -47,16 +48,13 @@ const CreateCategory = () => {
     getAllCategory();
   }, []);
 
-
-  //update category
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `${process.env.REACT_APP_API}/api/v1/category/update-category/${selected._id}`,  //from the setSelected from edit button
+        `${process.env.REACT_APP_API}/api/v1/category/update-category/${selected._id}`,
         { name: updatedName }
       );
-
       if (data.success) {
         toast.success(`${updatedName} is updated`);
         setSelected(null);
@@ -71,14 +69,13 @@ const CreateCategory = () => {
     }
   };
 
-
-  //delete category
   const handleDelete = async (pId) => {
     try {
-      const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/category/delete-category/${pId}`);
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_API}/api/v1/category/delete-category/${pId}`
+      );
       if (data.success) {
-        toast.success(`category is deleted`);
-
+        toast.success("Category is deleted");
         getAllCategory();
       } else {
         toast.error(data.message);
@@ -88,62 +85,69 @@ const CreateCategory = () => {
     }
   };
 
-
   return (
     <Layout title={"Dashboard - Create Category"}>
-      <div className="container-fluid m-3 p-3">
-        <div className="row">
-          {/* ------------------------------ */}
-          <div className="col-md-3">
+      <div className="p-6">
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Sidebar */}
+          <div className="md:w-1/4">
             <AdminMenu />
           </div>
-          {/* ------------------------------ */}
-          <div className="col-md-9">
-            <h1>Manage Category</h1>
 
-            <div className="p-3 w-50">
-              <CategoryForm handleSubmit={handleSubmit} value={name} setValue={setName}/>
+          {/* Main Content */}
+          <div className="md:w-3/4">
+            <h1 className="text-2xl font-semibold mb-6">Manage Category</h1>
+
+            <div className="w-full md:w-1/2 mb-8">
+              <CategoryForm
+                handleSubmit={handleSubmit}
+                value={name}
+                setValue={setName}
+              />
             </div>
-  {/* ----------------------table----------------------- */}
-            <div className="w-75">
-              <table className="table">
-                <thead>
+
+            {/* Category Table */}
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200 shadow rounded-lg">
+                <thead className="bg-gray-100 text-left">
                   <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Actions</th>
+                    <th className="px-4 py-2 text-sm font-medium text-gray-700">
+                      Name
+                    </th>
+                    <th className="px-4 py-2 text-sm font-medium text-gray-700">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
-
-                <tbody>
+                <tbody className="bg-white divide-y divide-gray-100">
                   {categories?.map((c) => (
-                    <>
-                      <tr>
-                        <td key={c._id}>{c.name}</td>
-
-                        <td>
-                          {/* ---------Edit button------------ */}
-                          <button className="btn btn-primary ms-2" onClick={() => {
-                              setVisible(true);
-                              setUpdatedName(c.name);
-                              setSelected(c);
-                            }}>Edit
-                          </button>
-
-                            {/* -------------delete button-------------- */}
-                          <button className="btn btn-danger ms-2" onClick={() => {handleDelete(c._id);}}> Delete</button>
-                        </td>
-
-                      </tr>
-                    </>
+                    <tr key={c._id} className="hover:bg-gray-50">
+                      <td className="px-4 py-2">{c.name}</td>
+                      <td className="px-4 py-2 space-x-2">
+                        <button
+                          onClick={() => {
+                            setVisible(true);
+                            setUpdatedName(c.name);
+                            setSelected(c);
+                          }}
+                          className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(c._id)}
+                          className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
                   ))}
                 </tbody>
-
               </table>
             </div>
- 
- {/* modal will pop up only the time of edit only 
- i can use something else for it */}
- 
+
+            {/* Modal for editing category */}
             <Modal
               onCancel={() => setVisible(false)}
               footer={null}
@@ -155,7 +159,6 @@ const CreateCategory = () => {
                 handleSubmit={handleUpdate}
               />
             </Modal>
-
           </div>
         </div>
       </div>
