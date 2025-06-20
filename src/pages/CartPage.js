@@ -54,27 +54,29 @@ const CartPage = () => {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const handleStripeCheckout = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.post(
-        "http://localhost:8080/api/v1/product/payment",
-        { cart },
-        {
-          headers: {
-            Authorization: auth?.token,
-          },
-        }
-      );
-      const stripe = await loadStripe("pk_test_51RaE2W4NTa7mzuyraDxT3w3sPcvrd2OepQQIkwELHJHanAIQu1gliogdUCsLz1qH65HZtJzZGWfKN1at1r1fyXUV00sdhXei6j");
-      await stripe.redirectToCheckout({ sessionId: data.id });
-      setLoading(false);
-    } catch (error) {
-      console.error("Stripe checkout error:", error);
-      toast.error("Payment failed");
-      setLoading(false);
-    }
-  };
+const handleStripeCheckout = async () => {
+  try {
+    setLoading(true);
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_API}/api/v1/product/payment`, // <-- fixed
+      { cart },
+      {
+        headers: {
+          Authorization: auth?.token,
+        },
+      }
+    );
+
+    const stripe = await loadStripe("pk_test_51RaE2W4NTa7mzuyraDxT3w3sPcvrd2OepQQIkwELHJHanAIQu1gliogdUCsLz1qH65HZtJzZGWfKN1at1r1fyXUV00sdhXei6j");
+
+    await stripe.redirectToCheckout({ sessionId: data.id });
+    setLoading(false);
+  } catch (error) {
+    console.error("Stripe checkout error:", error);
+    toast.error(error?.response?.data?.message || "Payment failed");
+    setLoading(false);
+  }
+};
 
   return (
     <Layout>
