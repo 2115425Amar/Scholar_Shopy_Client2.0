@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import UserMenu from "../../components/Layout/UserMenu";
-import Layout from "./../../components/Layout/Layout";
+import Layout from "../../components/Layout/Layout";
 import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -52,30 +52,37 @@ const Profile = () => {
           <UserMenu />
         </div>
 
-        {/* Editable Profile Card */}
+        {/* Form Section */}
         <div className="md:w-3/4 w-full">
           <form
             onSubmit={handleSubmit}
-            className="bg-white shadow-md rounded-lg p-6"
+            className="bg-white shadow-md rounded-lg p-6 max-w-xl mx-auto"
           >
-            <h2 className="text-xl font-semibold mb-6">Edit Your Profile</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+              Edit Your Profile
+            </h2>
 
-            {/* Full Name */}
             <div className="mb-4">
-              <label className="block font-medium mb-1">Full Name</label>
+              <label htmlFor="name" className="block font-medium mb-1">
+                Full Name
+              </label>
               <input
+                id="name"
                 type="text"
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
+                required
               />
             </div>
 
-            {/* Email (disabled) */}
             <div className="mb-4">
-              <label className="block font-medium mb-1">Email</label>
+              <label htmlFor="email" className="block font-medium mb-1">
+                Email
+              </label>
               <input
+                id="email"
                 type="email"
                 className="w-full bg-gray-100 border border-gray-300 rounded-md p-2"
                 value={email}
@@ -83,11 +90,14 @@ const Profile = () => {
               />
             </div>
 
-            {/* Password */}
             <div className="mb-4">
-              <label className="block font-medium mb-1">Password</label>
+              <label htmlFor="password" className="block font-medium mb-1">
+                Password
+              </label>
               <input
+                id="password"
                 type="password"
+                minLength={6}
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -95,11 +105,13 @@ const Profile = () => {
               />
             </div>
 
-            {/* Phone */}
             <div className="mb-4">
-              <label className="block font-medium mb-1">Phone</label>
+              <label htmlFor="phone" className="block font-medium mb-1">
+                Phone
+              </label>
               <input
-                type="text"
+                id="phone"
+                type="tel"
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -107,10 +119,12 @@ const Profile = () => {
               />
             </div>
 
-            {/* Address */}
             <div className="mb-6">
-              <label className="block font-medium mb-1">Address</label>
+              <label htmlFor="address" className="block font-medium mb-1">
+                Address
+              </label>
               <input
+                id="address"
                 type="text"
                 className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={address}
@@ -119,11 +133,10 @@ const Profile = () => {
               />
             </div>
 
-            {/* Submit */}
             <div className="text-right">
               <button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded"
               >
                 Update Profile
               </button>

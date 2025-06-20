@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
-// import SearchInput from "../Form/SearchInput";
 import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import { Badge } from "antd";
 import { IoCartOutline } from "react-icons/io5";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaChevronDown } from "react-icons/fa";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
@@ -17,7 +16,7 @@ const Header = () => {
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
 
-  // close dropdowns on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     const closeDropdown = (e) => {
       if (!e.target.closest(".dropdown")) {
@@ -53,31 +52,40 @@ const Header = () => {
           </button>
 
           {/* Nav Items */}
-          <ul className={`lg:flex lg:items-center lg:space-x-6 ${menuOpen ? "block" : "hidden"} absolute lg:static top-16 left-0 w-full lg:w-auto bg-white lg:bg-transparent px-6 lg:px-0 py-4 lg:py-0 space-y-4 lg:space-y-0`}>
-            {/* Search */}
-            {/* <li className="w-full lg:w-auto">
-              <SearchInput />
-            </li> */}
-
-            {/* Links */}
+          <ul
+            className={`lg:flex lg:items-center lg:space-x-6 ${
+              menuOpen ? "block" : "hidden"
+            } absolute lg:static top-16 left-0 w-full lg:w-auto bg-white lg:bg-transparent px-6 lg:px-0 py-4 lg:py-0 space-y-4 lg:space-y-0 z-40`}
+          >
             <li>
-              <NavLink to="/home" className="text-gray-700 hover:text-blue-600 font-medium">
+              <NavLink
+                to="/home"
+                className="text-gray-700 hover:text-blue-600 font-medium"
+              >
                 Home
               </NavLink>
             </li>
 
-            {/* Categories */}
+            {/* Categories Dropdown */}
             <li className="relative dropdown">
               <button
                 onClick={() => setCategoryOpen(!categoryOpen)}
-                className="text-gray-700 hover:text-blue-600 font-medium focus:outline-none"
+                className="flex items-center gap-1 text-gray-700 hover:text-blue-600 font-medium focus:outline-none"
               >
                 Categories
+                <FaChevronDown
+                  className={`transition-transform duration-200 ${
+                    categoryOpen ? "rotate-180" : "rotate-0"
+                  }`}
+                />
               </button>
               {categoryOpen && (
                 <ul className="absolute bg-white shadow rounded mt-2 w-48 z-50">
                   <li>
-                    <Link to="/categories" className="block px-4 py-2 hover:bg-gray-100">
+                    <Link
+                      to="/categories"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                    >
                       All Categories
                     </Link>
                   </li>
@@ -99,12 +107,18 @@ const Header = () => {
             {!auth?.user ? (
               <>
                 <li>
-                  <NavLink to="/register" className="text-gray-700 hover:text-blue-600 font-medium">
+                  <NavLink
+                    to="/register"
+                    className="text-gray-700 hover:text-blue-600 font-medium"
+                  >
                     Register
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/login" className="text-gray-700 hover:text-blue-600 font-medium">
+                  <NavLink
+                    to="/login"
+                    className="text-gray-700 hover:text-blue-600 font-medium"
+                  >
                     Login
                   </NavLink>
                 </li>
@@ -113,15 +127,22 @@ const Header = () => {
               <li className="relative dropdown">
                 <button
                   onClick={() => setUserDropdown(!userDropdown)}
-                  className="text-gray-700 hover:text-blue-600 font-medium focus:outline-none"
+                  className="flex items-center gap-1 text-gray-700 hover:text-blue-600 font-medium focus:outline-none"
                 >
                   {auth?.user?.name}
+                  <FaChevronDown
+                    className={`transition-transform duration-200 ${
+                      userDropdown ? "rotate-180" : "rotate-0"
+                    }`}
+                  />
                 </button>
                 {userDropdown && (
                   <ul className="absolute right-0 bg-white shadow rounded mt-2 w-48 z-50">
                     <li>
                       <NavLink
-                        to={`/dashboard${auth?.user?.role === 1 ? "/admin" : "/user"}`}
+                        to={`/dashboard${
+                          auth?.user?.role === 1 ? "/admin" : "/user"
+                        }`}
                         className="block px-4 py-2 hover:bg-gray-100"
                       >
                         Dashboard
@@ -142,9 +163,16 @@ const Header = () => {
 
             {/* Cart Icon */}
             <li>
-              <Badge count={cart?.length} offset={[0, 0]} className="cursor-pointer">
+              <Badge
+                count={cart?.length}
+                offset={[0, 0]}
+                className="cursor-pointer"
+              >
                 <NavLink to="/cart">
-                  <IoCartOutline size={28} className="text-gray-700 hover:text-blue-600" />
+                  <IoCartOutline
+                    size={28}
+                    className="text-gray-700 hover:text-blue-600"
+                  />
                 </NavLink>
               </Badge>
             </li>
