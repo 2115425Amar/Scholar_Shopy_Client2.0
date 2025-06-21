@@ -28,6 +28,8 @@ const CartPage = () => {
     }
   };
 
+  // Removes item by its ID
+  // Updates both cart state and localStorage
   const removeCartItem = (pid) => {
     try {
       let myCart = [...cart];
@@ -41,8 +43,7 @@ const CartPage = () => {
   };
 
   const updateQuantity = (pid, delta) => {
-    const updatedCart = cart
-      .map((item) => {
+    const updatedCart = cart.map((item) => {
         if (item._id === pid) {
           const newQty = (item.quantity || 1) + delta;
           return newQty <= 0 ? null : { ...item, quantity: newQty };
@@ -57,6 +58,7 @@ const CartPage = () => {
 const handleStripeCheckout = async () => {
   try {
     setLoading(true);
+    // Sends cart items to backend.
     const { data } = await axios.post(
       `${process.env.REACT_APP_API}/api/v1/product/payment`, // <-- fixed
       { cart },
@@ -66,9 +68,10 @@ const handleStripeCheckout = async () => {
         },
       }
     );
-
-    const stripe = await loadStripe("pk_test_51RaE2W4NTa7mzuyraDxT3w3sPcvrd2OepQQIkwELHJHanAIQu1gliogdUCsLz1qH65HZtJzZGWfKN1at1r1fyXUV00sdhXei6j");
-
+    // Gets a Stripe session ID.
+    const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+    // Redirects user to Stripe Checkout page.
+    // Frontend uses that session ID to redirect the user to Stripe-hosted payment page.
     await stripe.redirectToCheckout({ sessionId: data.id });
     setLoading(false);
   } catch (error) {
@@ -194,3 +197,17 @@ const handleStripeCheckout = async () => {
 };
 
 export default CartPage;
+
+// Conditional UI in Cart Summary
+
+// If cart is empty:
+// "Your Cart Is Empty"
+
+// If not logged in:
+// "Please login to checkout"
+
+// If address missing:
+// "Add Address to Proceed"
+
+// If all OK:
+// Show "Proceed to Payment" button

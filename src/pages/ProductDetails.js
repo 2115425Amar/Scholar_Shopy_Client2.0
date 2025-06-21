@@ -80,7 +80,7 @@ const ProductDetails = () => {
             {relatedProducts.map((p) => (
               <div
                 key={p._id}
-                className="bg-white rounded-lg shadow hover:shadow-lg transition duration-300"
+                className="bg-white rounded-lg shadow hover:shadow-lg transition duration-300 "
               >
                 <img
                   src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p?._id}`}
