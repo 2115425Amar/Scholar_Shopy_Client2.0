@@ -20,12 +20,22 @@ const HomePage = () => {
   const [cart, setCart] = useCart();
   const [loading2, setLoading2] = useState(false);
 
+  // It takes elements from categories[1] to categories[5]
   const citrus = categories.slice(1, 6);
 
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/category/get-category`);
       if (data?.success) setCategories(data?.category);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTotal = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/product-count`);
+      setTotal(data?.total);
     } catch (error) {
       console.log(error);
     }
@@ -48,14 +58,7 @@ const HomePage = () => {
     }
   };
 
-  const getTotal = async () => {
-    try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/product-count`);
-      setTotal(data?.total);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   useEffect(() => {
     if (page === 1) return;
@@ -100,6 +103,26 @@ const HomePage = () => {
       console.log(error);
     }
   };
+
+
+  const handleAddToCart = (p) => {
+  const existingProductIndex = cart.findIndex((item) => item._id === p._id);
+  let updatedCart = [];
+
+  if (existingProductIndex !== -1) {
+    updatedCart = cart.map((item, index) =>
+      index === existingProductIndex
+        ? { ...item, quantity: (item.quantity || 1) + 1 }
+        : item
+    );
+  } else {
+    updatedCart = [...cart, { ...p, quantity: 1 }];
+  }
+
+  setCart(updatedCart);
+  localStorage.setItem("cart", JSON.stringify(updatedCart));
+  toast.success(`${p.name} added to cart`);
+ };
 
   return (
     <Layout title="All Products - Best Offers">
@@ -170,27 +193,10 @@ const HomePage = () => {
                         More Details
                       </button>
                       <button
-                        onClick={() => {
-                          const existingProductIndex = cart.findIndex((item) => item._id === p._id);
-                          let updatedCart = [];
-
-                          if (existingProductIndex !== -1) {
-                            updatedCart = cart.map((item, index) =>
-                              index === existingProductIndex
-                                ? { ...item, quantity: (item.quantity || 1) + 1 }
-                                : item
-                            );
-                          } else {
-                            updatedCart = [...cart, { ...p, quantity: 1 }];
-                          }
-
-                          setCart(updatedCart);
-                          localStorage.setItem("cart", JSON.stringify(updatedCart));
-                          toast.success(`${p.name} added to cart`);
-                        }}
+                        onClick={() => handleAddToCart(p)}
                         className="bg-gray-800 text-white text-sm px-3 py-1 rounded hover:bg-gray-900"
                       >
-                        ADD TO CART
+                       ADD TO CART
                       </button>
                     </div>
                   </div>
