@@ -179,7 +179,7 @@ const HomePage = () => {
                   <img
                     src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
                     alt={p.name}
-                    className="w-full h-52 object-cover rounded"
+                    className="w-full h-26 object-cover rounded"
                   />
                   <div className="mt-3">
                     <h5 className="text-lg font-semibold">{p.name}</h5>

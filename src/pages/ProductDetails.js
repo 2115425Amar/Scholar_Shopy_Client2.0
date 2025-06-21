@@ -46,7 +46,7 @@ const ProductDetails = () => {
           <img
             src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${product._id}`}
             alt={product.name}
-            className="w-full h-[300px] object-cover rounded shadow"
+            className="w-full h-[300px]  rounded shadow"
           />
         </div>
         <div>

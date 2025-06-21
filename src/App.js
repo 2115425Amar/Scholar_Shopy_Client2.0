@@ -66,7 +66,7 @@ function App() {
           <Route path="admin/orders" element={<AdminOrders />} />
         </Route>
 
-        <Route path="/test" element={<Carausal />} />
+        {/* <Route path="/test" element={<Carausal />} /> */}
       </Routes>
     </>
   );
