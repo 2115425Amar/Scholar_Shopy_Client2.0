@@ -128,7 +128,7 @@ const HomePage = () => {
     <Layout title="All Products - Best Offers">
       <div className="flex flex-col md:flex-row gap-4 p-4">
         {/* Filters */}
-        <div className="md:w-1/5 w-full bg-white p-4 rounded shadow">
+        <div className="md:w-1/6 w-full bg-white p-4 rounded shadow">
           <h5 className="text-lg font-semibold text-center mb-2">Filter By Category</h5>
           <div className="flex flex-col gap-2">
             {citrus?.map((c) => (
@@ -173,13 +173,13 @@ const HomePage = () => {
           {loading2 ? (
             <Spinner2 />
           ) : products.length > 0 ? (
-            <div className="flex flex-wrap gap-4 mt-4">
+            <div className="flex flex-wrap gap-2 ml-2  mt-4">
               {products?.map((p) => (
                 <div key={p._id} className="w-72 border rounded shadow-md p-3">
                   <img
                     src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
                     alt={p.name}
-                    className="w-full h-26 object-cover rounded"
+                    className="w-full h-[60%] object-cover rounded"
                   />
                   <div className="mt-3">
                     <h5 className="text-lg font-semibold">{p.name}</h5>

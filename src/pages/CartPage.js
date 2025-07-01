@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { GiMailShirt } from "react-icons/gi";
 
 const CartPage = () => {
   const [auth] = useAuth();
@@ -61,7 +62,9 @@ const handleStripeCheckout = async () => {
     // Sends cart items to backend.
     const { data } = await axios.post(
       `${process.env.REACT_APP_API}/api/v1/product/payment`, // <-- fixed
-      { cart },
+      { cart,
+        // buyerEmail: user.email || amar8601082@GiMailShirt.com,
+      },
       {
         headers: {
           Authorization: auth?.token,
@@ -70,6 +73,7 @@ const handleStripeCheckout = async () => {
     );
     // Gets a Stripe session ID.
     const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
+    
     // Redirects user to Stripe Checkout page.
     // Frontend uses that session ID to redirect the user to Stripe-hosted payment page.
     await stripe.redirectToCheckout({ sessionId: data.id });
@@ -102,7 +106,7 @@ const handleStripeCheckout = async () => {
                   <img
                     src={`${process.env.REACT_APP_API}/api/v1/product/product-photo/${p._id}`}
                     alt={p.name}
-                    className="w-full h-40 object-cover rounded-md"
+                    className="w-full h-[100%] object-cover rounded-md"
                   />
                 </div>
                 <div className="md:w-2/3 md:pl-6 mt-3 md:mt-0 space-y-2">
