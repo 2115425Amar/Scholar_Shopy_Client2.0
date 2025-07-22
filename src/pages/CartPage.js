@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { GiMailShirt } from "react-icons/gi";
+// import { GiMailShirt } from "react-icons/gi";
 
 const CartPage = () => {
   const [auth] = useAuth();
