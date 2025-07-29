@@ -1,30 +1,48 @@
+// src/context/auth.js
 import { useState, useEffect, useContext, createContext } from "react";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [auth, setAuth] = useState({
     user: null,
     token: "",
   });
-
-  //default axios
-  axios.defaults.headers.common["Authorization"] = auth?.token;
 
   useEffect(() => {
     const data = localStorage.getItem("auth");
     if (data) {
       const parseData = JSON.parse(data);
 
-      setAuth({
-        ...auth,
-        user:  parseData.user,
-        token: parseData.token,
-      });
+      try {
+        const decoded = jwt_decode(parseData.token);
+
+        if (decoded.exp * 1000 < Date.now()) {
+          // Token expired
+          localStorage.removeItem("auth");
+          setAuth({ user: null, token: "" });
+          navigate("/login"); // Redirect to login
+        } else {
+          setAuth({
+            user: parseData.user,
+            token: parseData.token,
+          });
+
+          // Set default header
+          axios.defaults.headers.common["Authorization"] = parseData.token;
+        }
+      } catch (err) {
+        console.error("Invalid token", err);
+        localStorage.removeItem("auth");
+        setAuth({ user: null, token: "" });
+        navigate("/login");
+      }
     }
-    //eslint-disable-next-line
-  }, []);
+  }, [navigate]);
 
   return (
     <AuthContext.Provider value={[auth, setAuth]}>
@@ -33,8 +51,6 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-// custom hook  -> now we can use this useAuth in any component
+  // Set default header for axios
 const useAuth = () => useContext(AuthContext);
-
-
 export { useAuth, AuthProvider };
