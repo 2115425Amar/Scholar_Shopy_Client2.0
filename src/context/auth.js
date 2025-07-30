@@ -1,7 +1,7 @@
 // src/context/auth.js
 import { useState, useEffect, useContext, createContext } from "react";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
@@ -19,7 +19,7 @@ const AuthProvider = ({ children }) => {
       const parseData = JSON.parse(data);
 
       try {
-        const decoded = jwt_decode(parseData.token);
+        const decoded = jwtDecode(parseData.token);
 
         if (decoded.exp * 1000 < Date.now()) {
           // Token expired
